@@ -293,4 +293,4 @@ Like evolutionary clocks, epigenetic clocks may also suffer from non-uniform (de
 [^210414]: Zhang Q et al. (2018). Genotype effects contribute to variation in longitudinal methylome patterns in older people. [[paper](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-018-0585-7)]
 [^23114903]: Horvath S, Zhang Y, Langfelder P, Kahn RS, Boks MP, van Eijk K, van den Berg LH, Ophoff RA (2012). Aging effects on DNA methylation modules in human brain and blood tissue.
 [^231]: Jaffe AE and Irizarry RA (2014). Accounting for cellular heterogeneity is critical in epigenome-wide association studies. [[paper](https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r31)]
-[^030484]: Zhang Q et al. (2019). Improved precision of epigenetic clock estimates across tissues and its implication for biological ageing.
+[^030484]: Zhang Q et al. (2019). Improved precision of epigenetic clock estimates across tissues and its implication for biological ageing.[[paper](https://genomemedicine.biomedcentral.com/articles/10.1186/s13073-019-0667-1)]
