@@ -9,6 +9,7 @@
 *.log
 *.pot
 __pycache__/*
+__pycache__
 .cache/*
 .*.swp
 */.ipynb_checkpoints/*
@@ -26,6 +27,7 @@ dev
 epi-clocks-review/notes
 *.tsv
 *.gz
+*/assets/*
 
 # Package files
 *.egg
