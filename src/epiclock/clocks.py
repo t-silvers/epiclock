@@ -34,6 +34,7 @@ def tform_linear_comp(age_linear_comp: xr.DataArray, adult_age: int = 20) -> xr.
         (1 + adult_age) * age_linear_comp + adult_age
     )
 
+
 class MethylImputer(SimpleImputer):
     """Custom imputer for methylation data."""
     def transform(self, X: xr.DataArray) -> xr.DataArray:
@@ -52,8 +53,9 @@ class BaseClock(BaseEstimator, TransformerMixin, gcm.ml.PredictionModel):
         self.weights = get_clock_weights()
         self.alias = alias if alias else 'biological_age'
         self.weights = self.weights.sel(clock=self.alias) if alias else self.weights
-        self.intercept = 0
-        self.fitted_ = True  # Pass fit checks
+        self.coef_ = self.weights.to_numpy()  # Pass fit checks
+        self.intercept_ = 0  # Pass fit checks
+        self.is_fitted_ = True  # Pass fit checks
 
     def fit(self, X: xr.DataArray, y: Optional[xr.DataArray] = None) -> "BaseClock":
         if y is not None:
@@ -75,17 +77,16 @@ class BaseClock(BaseEstimator, TransformerMixin, gcm.ml.PredictionModel):
         return self
 
     def _linear_component(self, X: xr.DataArray) -> xr.DataArray:
-        return xr.dot(X, self.weights, dims='probe') + self.intercept
+        return xr.dot(X, self.weights, dims='probe') + self.intercept_
 
     def _f(self, X: xr.DataArray) -> xr.DataArray:
         return X
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(alias={self.alias}, intercept={self.intercept})"
+        return f"{self.__class__.__name__}(alias={self.alias}, intercept={self.intercept_})"
 
     def __str__(self):
-        return f"{self.__class__.__name__} instance with alias {self.alias} and intercept {self.intercept}"
-
+        return f"{self.__class__.__name__} instance with alias {self.alias} and intercept {self.intercept_}"
 
 @register_clock
 class HannumClock(BaseClock):
@@ -93,37 +94,33 @@ class HannumClock(BaseClock):
     def __init__(self, **kwargs):
         super().__init__('hannum')
 
-
 @register_clock
 class LinClock(BaseClock):
     def __init__(self, **kwargs):
         super().__init__('lin')
-        self.intercept = 12.2169841
-
+        self.intercept_ = 12.2169841
 
 @register_clock
 class PhenoAgeClock(BaseClock):
     _core = True
     def __init__(self, **kwargs):
         super().__init__('phenoage')
-        self.intercept = 60.664
+        self.intercept_ = 60.664
 
 @register_clock
 class Zhang2019Clock(BaseClock):
     def __init__(self, **kwargs):
         super().__init__('zhang2019')
-        self.intercept = 65.8
-
+        self.intercept_ = 65.8
 
 class BaseNonlinearClock(BaseClock):
     def __init__(self, alias, intercept, adult_age):
         super().__init__(alias)
-        self.intercept = intercept
+        self.intercept_ = intercept
         self.adult_age = adult_age
 
     def _f(self, X):
         return tform_linear_comp(X, self.adult_age)
-
 
 @register_clock
 class Horvath1Clock(BaseNonlinearClock):
@@ -131,12 +128,10 @@ class Horvath1Clock(BaseNonlinearClock):
     def __init__(self, adult_age=20, **kwargs):
         super().__init__('horvath1', 0.696, adult_age)
 
-
 @register_clock
 class Horvath2Clock(BaseNonlinearClock):
     def __init__(self, adult_age=20, **kwargs):
         super().__init__('horvath1', -0.447119319, adult_age)
-
 
 @register_clock
 class PedbeClock(BaseNonlinearClock):
