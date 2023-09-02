@@ -2,14 +2,14 @@
 
 ## Introduction
 
-Aging manifests through a variety of phenotypes that emerge in later years, and the relationship between chronological age and the onset of these traits remains complex and inconsistent. An older individual might present as clinically "younger" in some respects, while others may never exhibit certain signs of aging. Moreover, with the advent of anti-aging therapies, there is an unmet need to measure *biological* aging instead of *chronological* aging[^1]. In other words, a distinction must be made between ordinary clocks that measure age in linear time and aging clocks that measure aging phenotypes. To this end, DNA methylation-based age predictors (‘epigenetic clocks’) have emerged in the past decade, which measure biological aging based on methylation at a defined set of sites[^2][^3].
+Aging manifests through a variety of phenotypes that emerge during late adulthood and senescence. The relationship between chronological age and the onset of these traits, however, remains complex and inconsistent. An older individual might present as clinically "younger" in some respects, while others may never exhibit certain signs of aging. Moreover, with the advent of anti-aging therapies, there is an unmet need to measure *biological* age instead of *chronological* age[^1]. In other words, a distinction must be made between ordinary clocks that measure age in linear time and biological clocks that measure senescence-associated phenotypes. DNA methylation-based age predictors (‘epigenetic clocks’) have emerged in the past decade to address the need for biological clocks[^2][^3].
 
-The idea that a constant rate of molecular change can be used to measure time is among the oldest ideas in molecular evolution[^4]. Similar to epigenetic clocks, evolutionary clocks were readily adopted and used extensively to date speciation events. As statistical genomics approaches matured, it became clear that many of the earliest findings based on evolutionary clocks were biased by inadequate methodologies[^5][^6]. Because epigenetic clocks measure individuals over a lifespan, as opposed to species over millions of years, they do not suffer from the same issues that beset early evolutionary clocks. Nevertheless, epigenetic clocks are still in their infancy and yet already have their own challenges[^7].
+The idea that a constant rate of molecular change can be used to measure time is among the oldest ideas in the field of molecular evolution[^4]. Similar to epigenetic clocks, evolutionary clocks were readily adopted and used extensively to date speciation events. As statistical genomics approaches matured, it became clear that many of the earliest findings based on these clocks were biased by inadequate methodologies[^5][^6]. Because epigenetic clocks measure individuals over a lifespan, as opposed to species over millions of years, they do not suffer from the same issues that beset early evolutionary clocks. Nevertheless, epigenetic clocks are still in their infancy and yet already have their own challenges[^7].
 
-Epigenetic clocks have been widely embraced in aging research as the definitive measure of biological aging. While these clocks boast remarkable accuracy in predicting chronological age—and possibly biological age too—the underlying theory that would substantiate this parlor trick remains scant. As a result, we have pinpointed three "overriding" challenges to epigenetic clock theory, cast as questions:
+Epigenetic clocks have been widely embraced in aging research as the definitive measure of biological aging. While these clocks boast remarkable accuracy in predicting chronological age—and possibly biological age too—there remains scant underlying theory to substantiate this parlor trick. We have pinpointed three "overriding" challenges to epigenetic clock theory, cast as questions:
 
 1. What do epigenetic clocks measure?
-2. Could sophisticated statistical methods improve epigenetic clocks?
+2. Are epigenetic clocks statistically sound?
 3. Is the study and usage of epigenetic clocks justified?
 
 The purpose of this report is to provide a technical overview of the theory behind epigenetic clocks through the lens of these three challenges. We begin with a brief summary of the emerging theory, followed by a review of the literature. We then introduce the notation and mathematical background necessary to understand the theory. We then describe the methods and approaches used to develop epigenetic clocks, including data sources and preprocessing, model development, and analysis techniques. We conclude with a discussion of the current state of the theory and future directions.
@@ -45,7 +45,7 @@ $$
 \text{age}:\text{aging}::\text{lifespan}:\text{healthspan}
 $$
 
-and terms like "youthful" and "older" are used to quantify *aging*, the predicted age of an individual.
+and terms like "youthful" and "older" are used to quantify *aging*, the predicted age of an individual. When ambiguous, we will write *chronological age* to refer to *age*.
 
 ***Epigenome* vs. *Methylome***: We rarely draw a distinction between the epigenome and the methylome. We adopt conventions from the literature for referring to DNA methylation-based clocks as epigenetic clocks.
 
@@ -266,9 +266,21 @@ The core clocks cannot disentangle changes in methylation from changes to the pr
 
 > The [Age acceleration residuals (AAR)]-associated probes from the age predictors of Horvath and Hannum were enriched in CpG sites showing DNA methylation heterogeneity across cell types, suggesting AAR from these predictors is affected by the variation in cellular composition. The sensitivity analysis confirmed that no significant (P < 0.05/4) associations were observed after adjusting for white blood cell counts (Table 2). This demonstrates that the difference in the cellular makeup of the samples in our test sets is a confounder in the association between AAR from the Hannum/Horvath age predictors and mortality. This result was not consistent with what has been reported by the previous study. ... More datasets with measured white blood cell counts are needed to increase detection power.
 
-### Challenge 2: Could sophisticated statistical methods improve epigenetic clocks?
+### Challenge 2: Are epigenetic clocks statistically sound?
 
 Like evolutionary clocks, epigenetic clocks may also suffer from non-uniform (de)methylation rates over time. A study[^210414] reported that a number of CpG sites show longitudinal variation in methylation rates across individuals, a violation to the uniform-rate assumption of clocks.
+
+### Challenge 3: Is the study and usage of epigenetic clocks justified?
+
+
+
+### Popular Recommendations for Using Epigenetic Clocks
+
+
+
+### Our Recommendations for Using Epigenetic Clocks
+
+Don't.
 
 ## References
 

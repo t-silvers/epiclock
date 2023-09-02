@@ -28,6 +28,7 @@ epi-clocks-review/notes
 *.tsv
 *.gz
 */assets/*
+notebooks/*
 
 # Package files
 *.egg
