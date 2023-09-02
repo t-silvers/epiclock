@@ -1,3 +1,4 @@
+import warnings
 from typing import Type, List, Dict, Optional, Union
 
 import numpy as np
@@ -55,10 +56,18 @@ class BaseClock(BaseEstimator, TransformerMixin, gcm.ml.PredictionModel):
         self.fitted_ = True  # Pass fit checks
 
     def fit(self, X: xr.DataArray, y: Optional[xr.DataArray] = None) -> "BaseClock":
+        if y is not None:
+            warnings.warn('A target y was provided but will be ignored. '
+                          f'Pre-fit weights are used for {self.__class__.__name__}, '
+                          ' per the original publication.')
         return self
 
     def transform(self, X: xr.DataArray) -> xr.DataArray:
         return self._f(self._linear_component(X))
+
+    predict = transform
+    
+    fit_predict = TransformerMixin.fit_transform
 
     def set_output(self, transform: Optional[str] = None) -> "BaseClock":
         if transform not in ['default', None]:
@@ -71,8 +80,11 @@ class BaseClock(BaseEstimator, TransformerMixin, gcm.ml.PredictionModel):
     def _f(self, X: xr.DataArray) -> xr.DataArray:
         return X
 
-    predict = transform
-    fit_predict = TransformerMixin.fit_transform
+    def __repr__(self):
+        return f"{self.__class__.__name__}(alias={self.alias}, intercept={self.intercept})"
+
+    def __str__(self):
+        return f"{self.__class__.__name__} instance with alias {self.alias} and intercept {self.intercept}"
 
 
 @register_clock
