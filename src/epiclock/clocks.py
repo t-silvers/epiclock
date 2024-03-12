@@ -1,5 +1,5 @@
 import warnings
-from typing import Type, List, Dict, Optional, Union
+from typing import Callable, Dict, List, Optional, Type, Union
 
 import numpy as np
 import xarray as xr
@@ -11,20 +11,43 @@ from sklearn.pipeline import Pipeline
 from epiclock import get_clock_weights
 
 
-_allclocks = []
+_allclocks: Dict[str, List[Type[BaseEstimator]]] = {}
 
-def register_clock(cls: Type[BaseEstimator]) -> Type[BaseEstimator]:
-    """Register a clock class."""
-    _allclocks.append(cls)
-    return cls
+def register_clock(categories: List[str] = None) -> Callable[[Type], Type]:
+    """A decorator factory for registering a clock class with optional categories."""
 
-def list_available_clocks() -> List[str]:
+    def _decorator(cls: Type) -> Type:
+
+        nonlocal categories
+        
+        if categories is None:
+            categories = ['default']
+        else:
+            categories = [categories] if isinstance(categories, str) else categories
+            if 'default' not in categories:
+                categories = ['default'] + categories
+        
+        for category in categories:
+            if category not in _allclocks:
+                _allclocks[category] = []
+            _allclocks[category].append(cls)
+        
+        return cls
+
+    return _decorator
+
+
+def list_available_clocks(category: str = 'default') -> List[str]:
     """List names of all available clock classes."""
-    return [cls.__name__ for cls in _allclocks]
+    return [cls.__name__ for cls in _allclocks.get(category, [])]
+
+def list_all_categories() -> List[str]:
+    """List all clock categories."""
+    return list(_allclocks.keys())
 
 def list_core_clocks() -> List[str]:
     """List names of all core clock classes."""
-    return [cls.__name__ for cls in _allclocks if hasattr(cls, '_core') and cls._core]
+    return list_available_clocks('core')
 
 def tform_linear_comp(age_linear_comp: xr.DataArray, adult_age: int = 20) -> xr.DataArray:
     """Transform the linear component of age."""
@@ -88,26 +111,24 @@ class BaseClock(BaseEstimator, TransformerMixin, gcm.ml.PredictionModel):
     def __str__(self):
         return f"{self.__class__.__name__} instance with alias {self.alias} and intercept {self.intercept_}"
 
-@register_clock
+@register_clock(categories=['core'])
 class HannumClock(BaseClock):
-    _core = True
     def __init__(self, **kwargs):
         super().__init__('hannum')
 
-@register_clock
+@register_clock()
 class LinClock(BaseClock):
     def __init__(self, **kwargs):
         super().__init__('lin')
         self.intercept_ = 12.2169841
 
-@register_clock
+@register_clock(categories=['core'])
 class PhenoAgeClock(BaseClock):
-    _core = True
     def __init__(self, **kwargs):
         super().__init__('phenoage')
         self.intercept_ = 60.664
 
-@register_clock
+@register_clock()
 class Zhang2019Clock(BaseClock):
     def __init__(self, **kwargs):
         super().__init__('zhang2019')
@@ -122,18 +143,17 @@ class BaseNonlinearClock(BaseClock):
     def _f(self, X):
         return tform_linear_comp(X, self.adult_age)
 
-@register_clock
+@register_clock(categories=['core'])
 class Horvath1Clock(BaseNonlinearClock):
-    _core = True
     def __init__(self, adult_age=20, **kwargs):
         super().__init__('horvath1', 0.696, adult_age)
 
-@register_clock
+@register_clock()
 class Horvath2Clock(BaseNonlinearClock):
     def __init__(self, adult_age=20, **kwargs):
-        super().__init__('horvath1', -0.447119319, adult_age)
+        super().__init__('horvath2', -0.447119319, adult_age)
 
-@register_clock
+@register_clock()
 class PedbeClock(BaseNonlinearClock):
     def __init__(self, adult_age=20, **kwargs):
         super().__init__('pedbe', -2.10, adult_age)
@@ -149,7 +169,7 @@ def fit_all_clocks(data: xr.DataArray, imputer: Optional[MethylImputer] = None,
         imputer = MethylImputer(strategy='constant', fill_value=0)
 
     if clocks is None:
-        clocks = _allclocks
+        clocks = _allclocks['default']
         if len(clocks) == 0:
             raise ValueError('No clocks to fit')
     else:

@@ -24,11 +24,14 @@ __pycache__
 .vscode
 tags
 dev
-epi-clocks-review/notes
 *.tsv
 *.gz
+*.db
 */assets/*
-notebooks/*
+notebooks
+# epi-clocks-review
+# epi-clocks-review/notes
+*.png
 
 # Package files
 *.egg

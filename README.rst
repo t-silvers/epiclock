@@ -1,28 +1,3 @@
-.. These are examples of badges you might want to add to your README:
-   please update the URLs accordingly
-
-    .. image:: https://api.cirrus-ci.com/github/<USER>/epiclock.svg?branch=main
-        :alt: Built Status
-        :target: https://cirrus-ci.com/github/<USER>/epiclock
-    .. image:: https://readthedocs.org/projects/epiclock/badge/?version=latest
-        :alt: ReadTheDocs
-        :target: https://epiclock.readthedocs.io/en/stable/
-    .. image:: https://img.shields.io/coveralls/github/<USER>/epiclock/main.svg
-        :alt: Coveralls
-        :target: https://coveralls.io/r/<USER>/epiclock
-    .. image:: https://img.shields.io/pypi/v/epiclock.svg
-        :alt: PyPI-Server
-        :target: https://pypi.org/project/epiclock/
-    .. image:: https://img.shields.io/conda/vn/conda-forge/epiclock.svg
-        :alt: Conda-Forge
-        :target: https://anaconda.org/conda-forge/epiclock
-    .. image:: https://pepy.tech/badge/epiclock/month
-        :alt: Monthly Downloads
-        :target: https://pepy.tech/project/epiclock
-    .. image:: https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter
-        :alt: Twitter
-        :target: https://twitter.com/epiclock
-
 .. image:: https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold
     :alt: Project generated with PyScaffold
     :target: https://pyscaffold.org/
@@ -34,10 +9,12 @@ epiclock
 ========
 
 
-    Add a short description here!
+    Pure Python implementation of `MorganLevineLab/methylCIPHER`.
 
 
-A longer description of your project goes here...
+Provides scikit-learn compatible "epigenetic clocks" for the common clock models provided by the `MorganLevineLab/methylCIPHER` R package. Essentially a pure python port of that package with some different design choices. Code is in a functional state for use in personal projects.
+
+While packaged, this is not yet a release of any kind. Use at your own risk.
 
 
 .. _pyscaffold-notes:
